@@ -27,36 +27,56 @@
      * THE SOFTWARE.
      *
      */
- var StorageIO = function (e) {
+ var StorageIO = function (_dbname) {
 if(global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB){
   return {
     indexedDB: global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB,
     IDBTransaction: global.IDBTransaction || global.webkitIDBTransaction || global.msIDBTransaction,
     IDBKeyRange: global.IDBKeyRange || global.webkitIDBKeyRange || global.msIDBKeyRange,
-    request: null,
+    req: null,
     result: null,
+    dbName: _dbname || "test", 
     error: function (event) {
+      // Should do some error handling
+      // TODO: This code is not complete.. Will finish soon
       console.log("request failed!");
     },
     success: function (event) {
-      this.result = this.request.result;
+      this.result = this.req.result;
     },
-    read: function () {},
-    write: function () {},
-    rm: function () {},
-    open: function (dbname) {
-      if (this.indexedDB) {
-        this.request = this.indexedDB.open(dbname);
-        this.request.onerror = this.error;
-        this.request.success = this.success;
-      }
+    read: function () {
+    //TODO:This code is not complete.. Will finish soon
+    },
+    rm: function () {
+    //TODO:This code is not complete.. Will finish soon
+    },
+    open: function () {
+        this.req = this.indexedDB.open(this.dbname);
+        this.req.onerror = this.error;
+        this.req.success = this.success;
+        return this; 
     }, 
+  /**
+   * @param {Object} has three keys and looks like this: { "key":string, value":string, "isUnique":bool}
+   */
+    write: function (obj) {
+        //TODO: Must be able to write key value pairs to the indexedDB.
+        //TODO: This code is not complete.. Will finish soon
+        this.req.onupgradeneeded =function(event){
+            var st= event.currentTarget.result.createObjectStore( this.dbname, {keypath : 'id', autoIncrement: true } );
+            //Creating Columns
+            for(var i=0;i<obj.length; i++){
+                st.createIndex(obj[i]["key"], obj[i]["value"], {unique:obj[i]["isUnique"]});
+            }
+        }
+    },
     close: function(){};
   };
 } else {
     /*
      * As a fallback solution to acheive cross browser compatibility 
-     * I've included a Web SQL Backed solution. 
+     * I've included a Web SQL Backed solution.
+     * TODO:This code is not complete.. Will finish soon
      */
     return {
         read:function(){},
