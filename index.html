@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Storageio.js by zmhassan</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Storageio.js</h1>
+        <h2>Cross Browser Javascript Library for HTML5 Storage Utilizing IndexedDB or if not supported falling back to Web SQL. Powerful library to help you build offline applications.</h2>
+        <a href="https://github.com/zmhassan/StorageIO.js" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p><img src="http://3.bp.blogspot.com/-7VNxNemjYHM/UnllNdpNmlI/AAAAAAAAAak/k1ojRbl6xFI/s320/1383708950_HTML5-02.png" alt="HTML5 Image"></p>
+
+<h2>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction:</h2>
+
+<p>As users many things are abstracted from us, such as browser rendering engines and its effect on websites we use everyday. I will be going through an overview of new technologies in HTML5.</p>
+
+<h2>
+<a name="rendering-engines" class="anchor" href="#rendering-engines"><span class="octicon octicon-link"></span></a>Rendering Engines:</h2>
+
+<p>Rendering Engine also known as web browser engine or layout engine is used by web browsers to present formatted content to users in a visual form from HTML, CSS, XML and Images files. It also processes client side scripts, cookies, sends http requests (GET, POST, PUT, DELETE, and HEAD). Depending on which rendering engine used browser vendors try to follow specifications to enable a user to view a single html page on multiple browsers, atleast thats how its supposed to be. You will find that not all browser support the latest specifications such as HTML5, CSS3 and many more cutting edge technologies.</p>
+
+<h2>
+<a name="popular-rendering-engines" class="anchor" href="#popular-rendering-engines"><span class="octicon octicon-link"></span></a>Popular Rendering Engines:</h2>
+
+<ul>
+<li>Webkit: Used by Apple's Safari, Google Chrome</li>
+<li>Gecko: Used by Mozilla's Firefox</li>
+<li>Trident: Used by Microsoft Internet Explorer</li>
+<li>Blink: Used by Opera (15+), Google Chrome (28+)</li>
+</ul><h2>
+<a name="html5-storage" class="anchor" href="#html5-storage"><span class="octicon octicon-link"></span></a>HTML5 Storage:</h2>
+
+<p>When developers think about storing data they typically think of storing data only on the server via Ajax or REST. That's cool but what if you want to run the application offline?
+Advantages</p>
+
+<p>Many companies find storage cumbersome as data continues to grow so large on the server side and if its possible to save some data on the client it could save space on the server and bandwidth.
+If an application is waiting to upload data and there is network latency it may cause an application to linger. 
+Useful for offline applications that would like to cache data.
+Great to speed up performance of your data driven application
+Disadvantage</p>
+
+<p>Data may be vulnerable if someone gets physical access to your computer. 
+Multiple clients that doesn't sync data with the server may have difficulty accessing the updated data from one client to the other. Simple solution sync your data.
+Luckily HTML5 has many technologies that can help mitigate this but not all these technologies are support in all browsers. See image below:</p>
+
+<p><img src="http://4.bp.blogspot.com/-3E0guJtvzF4/UnlTMU7JeqI/AAAAAAAAAaY/m6o05a6GjgY/s640/BrowserSupport.png" alt="Browser Support">
+screenshot from <a href="http://www.html5rocks.com/en/features/storage">http://www.html5rocks.com/en/features/storage</a></p>
+
+<h2>
+<a name="why-should-i-care" class="anchor" href="#why-should-i-care"><span class="octicon octicon-link"></span></a>Why should I care?</h2>
+
+<p>As software developers we should have an idea of how the web works because we may be in a situation where we are asked to port an application that is supported from one browser to a browser that is not supported. What I mean by 'not supported' is for example in the case of  Adobe's Brackets which works fine on WebKit browsers doesn't work on non-webkit browsers.</p>
+
+<h2>
+<a name="what-indexeddb" class="anchor" href="#what-indexeddb"><span class="octicon octicon-link"></span></a>What IndexedDB?</h2>
+
+<p>IndexedDB is object oriented and does not use SQL but rather uses its own syntax. It is an indexed table system. It is used to index (save) or query (retrieve) objects (data stored/retrieved with a key) on the client's browser. It does have some secure features such as same-origin policy where you are not allowed to access data from multiple domains. It stores data in a key value pair.</p>
+
+<ul>
+<li>Asyncronous API
+It works like Ajax letting you pass data and pass a callback function to return an event to let you know if it was successful or not. You can use the 'onsuccess' or 'onerror' property to attach event listeners to execute something if it succeeds or fails.  You can use WebWorker with this to improve performance.</li>
+<li>Syncronous API
+Currently no browser supports this.
+Note:
+IndexedDB isn't good for full-text search, internationalized sorting, and synchronization.
+Web Worker is a way to achieve concurrency in JavaScript.</li>
+</ul><h2>
+<a name="what-is-websql" class="anchor" href="#what-is-websql"><span class="octicon octicon-link"></span></a>What is WebSQL?</h2>
+
+<p>This is a relation table system and has been deprecated by W3C.  It isn't a part of the HTML5 Specification but is still a useful technology to use because it supported in browsers that IndexedDB doesn't support.</p>
+
+<h2>
+<a name="conclusion" class="anchor" href="#conclusion"><span class="octicon octicon-link"></span></a>Conclusion</h2>
+
+<p>HTML5 is interesting and as more browser vendors provide HTML5 Specification support, users and developers will have a better experience on the web. At least that is what I hope. In that case I've created StorageIO.js to address this need for cross browser HTML5 Storage.</p>
+
+<p>Here are some cool demo's of IndexedDB in action:
+<a href="https://developer.mozilla.org/ms/demos/tag/tech:indexeddb">https://developer.mozilla.org/ms/demos/tag/tech:indexeddb</a></p>
+
+<p>Thanks,
+Zak Hassan
+<a href="https://github.com/zmhassan" class="user-mention">@zmhassan</a></p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/zmhassan/StorageIO.js/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/zmhassan/StorageIO.js/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/zmhassan/StorageIO.js"></a> is maintained by <a href="https://github.com/zmhassan">zmhassan</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
