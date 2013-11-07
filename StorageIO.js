@@ -25,23 +25,24 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- * 
- * TODO: Need to include require.js
- *  http://requirejs.org/docs/release/2.1.9/comments/require.js
+ *  
+ *  Dependencies:
+ *  require.js  - http://requirejs.org/docs/release/2.1.9/comments/require.js
+ *  backbone.js - http://backbonejs.org/
+ *  underscore.js - http://underscorejs.org/
+ *  
  */
 (function (global, runner) {
 
     if (typeof exports === 'object' && typeof require === 'function') {
-     module.exports = runner(require("underscore"), require("backbone"));
+      module.exports = runner(require("underscore"), require("backbone"));
    } else if (typeof define === "function" && define.amd) {
-      // AMD. Register as an anonymous module.
       define(["underscore","backbone"], function(_, Backbone) {
-        // Use global variables if the locals are undefined.
         return runner(_ || global._, Backbone || global.Backbone);
       });
    } else {
-      // RequireJS isn't being used. Assume underscore and backbone are loaded in <script> tags
-      factory(_, Backbone);
+      // RequireJS isn't being used. Make sure underscore and backbone are loaded in script tags
+      runner(_, Backbone);
    }
   
 })(this,function(_, Backbone){
