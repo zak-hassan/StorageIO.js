@@ -2,9 +2,7 @@
 
 /* @Author: Zakeria Hassan <zak.hassan1010@gmail.com>
  * @Date: Nov. 6, 2013
- * @License: MIT
- * @Purpose:
- * Generally StorageIO uses IndexedDB http://www.w3.org/TR/IndexedDB/.  
+ * @Usage: Generally StorageIO uses IndexedDB http://www.w3.org/TR/IndexedDB/.  
  * If IndexedDB isn't isn't supported then it use as an alternative 
  * WebSQL http://www.w3.org/TR/webdatabase/.
  * 
@@ -32,23 +30,27 @@
  *  underscore.js - http://underscorejs.org/
  *  
  */
+
+/* 
+ * @parm global : 'this' object
+ * @parm runner : 'callback' function
+ */
 (function (global, runner) {
 
-    if (typeof exports === 'object' && typeof require === 'function') {
-      module.exports = runner(require("underscore"), require("backbone"));
-   } else if (typeof define === "function" && define.amd) {
-      define(["underscore","backbone"], function(_, Backbone) {
-        return runner(_ || global._, Backbone || global.Backbone);
-      });
-   } else {
-      // RequireJS isn't being used. Make sure underscore and backbone are loaded in script tags
-      runner(_, Backbone);
-   }
-  
-})(this,function(_, Backbone){
- var global= this;
-    // Use Backbone and RequireJS to improve code  
-    var StorageIO = function (_dbname) {
+  if (typeof exports === 'object' && typeof require === 'function') {
+    module.exports = runner(require("underscore"), require("backbone"));
+  } else if (typeof define === "function" && define.amd) {
+    define(["underscore", "backbone"], function (_, Backbone) {
+      return runner(_ || global._, Backbone || global.Backbone);
+    });
+  } else {
+    // RequireJS isn't being used. Make sure underscore and backbone are loaded in script tags
+    runner(_, Backbone);
+  }
+})(this, function (_, Backbone) {
+  var global = this;
+  // Use Backbone and RequireJS to improve code  
+  var StorageIO = function (_dbname) {
       if (global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB) {
         return {
           indexedDB: global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB,
@@ -92,8 +94,7 @@
                   keypath: 'id',
                   autoIncrement: true
                 });
-                  if(!columns)
-                      throw new Error("Error code: 999 - Missing column variable in open function");
+                if (!columns) throw new Error("Error code: 999 - Missing column variable in open function");
                 // Setting columns up
                 for (var i = 0; i < obj.length; i++) {
                   st.createIndex(columns[i]["key"], columns[i]["value"], {
@@ -101,9 +102,9 @@
                   });
                 }
               } catch (e) {
-                  
+                  // TODO: Must handle exception 
               } finally {
-
+                  // TODO: clean up 
               }
             }
             return this;
