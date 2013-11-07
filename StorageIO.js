@@ -25,7 +25,9 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
+ * 
+ * TODO: Need to include require.js
+ *  http://requirejs.org/docs/release/2.1.9/comments/require.js
  */
 (function (global) {
 
@@ -52,30 +54,49 @@
           rm: function () {
             //TODO:This code is not complete.. Will finish soon
           },
-          open: function () {
+          /**
+           *  @param {Object} has three keys and looks like this: {      "key" : string, 
+           *                                                           "value" : string, 
+           *                                                        "isUnique" : bool   }
+           * Establishs a database connection and if this is a a new database
+           * It creates the columns that will be used. It sets up the functions
+           * that are executed if the req's fail or succeed
+           */
+          open: function (columns) {
             this.req = this.indexedDB.open(this.dbname);
             this.req.onerror = this.error;
             this.req.success = this.success;
+            // Comment: the "onupgradeneeded" is triggered when a new database is created and   
+            // TODO: Must be able to write key value pairs to the indexedDB.
+            // TODO: This code is not complete.. Will finish soon
+            this.req.onupgradeneeded = function (event) {
+              try {
+                var st = event.currentTarget.result.createObjectStore(this.dbname, {
+                  keypath: 'id',
+                  autoIncrement: true
+                });
+                  if(!columns)
+                      throw new Error("Error code: 999 - Missing column variable in open function");
+                // Setting columns up
+                for (var i = 0; i < obj.length; i++) {
+                  st.createIndex(columns[i]["key"], columns[i]["value"], {
+                    unique: columns[i]["isUnique"]
+                  });
+                }
+              } catch (e) {
+                  
+              } finally {
+
+              }
+            }
             return this;
           },
           /**
            * @param {Object} has three keys and looks like this: { "key":string, value":string, "isUnique":bool}
            */
           write: function (obj) {
-            //TODO: Must be able to write key value pairs to the indexedDB.
-            //TODO: This code is not complete.. Will finish soon
-            this.req.onupgradeneeded = function (event) {
-              var st = event.currentTarget.result.createObjectStore(this.dbname, {
-                keypath: 'id',
-                autoIncrement: true
-              });
-              //Creating Columns
-              for (var i = 0; i < obj.length; i++) {
-                st.createIndex(obj[i]["key"], obj[i]["value"], {
-                  unique: obj[i]["isUnique"]
-                });
-              }
-            }
+
+
           },
           close: function () {};
         };

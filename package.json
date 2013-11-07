@@ -1,0 +1,22 @@
+{
+  "author": "Zakeria Hassan <zak.hassan1010@gmail.com> (http://bzcareermongodb.blogspot.ca/)",
+  "name": "StorageIO",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zmhassan/StorageIO.js.git"
+  },
+  "dependencies": {
+    "backbone": "~1.x.x",
+    "underscore": "~1.4.x"
+  },
+  "devDependencies": {
+    "uglify-js": "~1.2.6",
+    "mocha-phantomjs": "~1.1.2",
+    "browserify": "~2.x.x"
+  },
+  "main": "./StorageIO.js",
+  "engines": {
+    "node": "*"
+  }
+}
