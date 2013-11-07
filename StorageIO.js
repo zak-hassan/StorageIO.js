@@ -46,7 +46,7 @@
    }
   
 })(this,function(_, Backbone){
-
+ var global= this;
     // Use Backbone and RequireJS to improve code  
     var StorageIO = function (_dbname) {
       if (global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB) {
@@ -133,5 +133,5 @@
     };
 
 
-  this.StorageIO = StorageIO;
+  global.StorageIO = StorageIO;
 });
