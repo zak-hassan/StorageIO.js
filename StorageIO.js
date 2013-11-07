@@ -29,9 +29,25 @@
  * TODO: Need to include require.js
  *  http://requirejs.org/docs/release/2.1.9/comments/require.js
  */
-(function (global) {
+(function (global, runner) {
 
-  var StorageIO = function (_dbname) {
+    if (typeof exports === 'object' && typeof require === 'function') {
+     module.exports = runner(require("underscore"), require("backbone"));
+   } else if (typeof define === "function" && define.amd) {
+      // AMD. Register as an anonymous module.
+      define(["underscore","backbone"], function(_, Backbone) {
+        // Use global variables if the locals are undefined.
+        return runner(_ || global._, Backbone || global.Backbone);
+      });
+   } else {
+      // RequireJS isn't being used. Assume underscore and backbone are loaded in <script> tags
+      factory(_, Backbone);
+   }
+  
+})(this,function(_, Backbone){
+
+    // Use Backbone and RequireJS to improve code  
+    var StorageIO = function (_dbname) {
       if (global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB) {
         return {
           indexedDB: global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB,
@@ -116,5 +132,5 @@
     };
 
 
-  global.StorageIO = StorageIO;
-})(this);
+  this.StorageIO = StorageIO;
+});
