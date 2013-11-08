@@ -26,6 +26,7 @@
  *  
  *  Dependencies:
  *  require.js  - http://requirejs.org/docs/release/2.1.9/comments/require.js
+ *  jquery.js - http://jquery.com
  *  backbone.js - http://backbonejs.org/
  *  underscore.js - http://underscorejs.org/
  *  
@@ -38,26 +39,43 @@
 (function (global, runner) {
 
   if (typeof exports === 'object' && typeof require === 'function') {
-    module.exports = runner(require("underscore"), require("backbone"));
+    module.exports = runner(require("underscore"), require("backbone"), require("idbfs"));
   } else if (typeof define === "function" && define.amd) {
-    define(["underscore", "backbone"], function (_, Backbone) {
-      return runner(_ || global._, Backbone || global.Backbone);
+    define(["underscore", "backbone","idbfs"], function (_, Backbone, IDBFS) {
+      return runner(_ || global._, Backbone || global.Backbone, IDBFS || global.IDBFS);
     });
   } else {
     // RequireJS isn't being used. Make sure underscore and backbone are loaded in script tags
-    runner(_, Backbone);
+    runner(_, Backbone,IDBFS);
   }
-})(this, function (_, Backbone) {
-  var global = this;
+})(this, function (_, Backbone, IDBFS ) {
+  var global = window;
   // Use Backbone and RequireJS to improve code  
   var StorageIO = function (_dbname) {
-      if (global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB) {
-        return {
+     
+        // USE IDBFS SOMEWHERE HERE.
+          //Setting backbone models
+          //1) Directory
+          //2) File
+ var Directory = Backbone.Model.extend({
+        initialize: function(){
+            // Triggered when you create a directory
+        }
+    });
+          
+ var File = Backbone.Model.extend({
+        initialize: function(){
+          // Triggered when you create a File
+        }
+ });
+    return (global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB) ?
+         {
           indexedDB: global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB,
           IDBTransaction: global.IDBTransaction || global.webkitIDBTransaction || global.msIDBTransaction,
           IDBKeyRange: global.IDBKeyRange || global.webkitIDBKeyRange || global.msIDBKeyRange,
           req: null,
           result: null,
+          _fs: IDBFS,
           dbName: _dbname || "test",
           error: function (event) {
             // Should do some error handling
@@ -116,23 +134,21 @@
 
 
           },
-          close: function () {};
-        };
-      } else {
-        /*
+          close: function () {}
+      
+        } : { read: function () {
+          /*
          * As a fallback solution to acheive cross browser compatibility 
          * I've included a Web SQL Backed solution.
          * TODO:This code is not complete.. Will finish soon
          */
-        return {
-          read: function () {},
-          write: function () {},
-          rm: function () {}
-        }
-      }
+        },
+            write: function () {},
+               rm: function () {}  };
+      };
 
-    };
+    
 
 
-  global.StorageIO = StorageIO;
+  _.StorageIO = StorageIO;
 });
