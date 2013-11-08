@@ -41,114 +41,112 @@
   if (typeof exports === 'object' && typeof require === 'function') {
     module.exports = runner(require("underscore"), require("backbone"), require("idbfs"));
   } else if (typeof define === "function" && define.amd) {
-    define(["underscore", "backbone","idbfs"], function (_, Backbone, IDBFS) {
+    define(["underscore", "backbone", "idbfs"], function (_, Backbone, IDBFS) {
       return runner(_ || global._, Backbone || global.Backbone, IDBFS || global.IDBFS);
     });
   } else {
     // RequireJS isn't being used. Make sure underscore and backbone are loaded in script tags
-    runner(_, Backbone,IDBFS);
+    runner(_, Backbone, IDBFS);
   }
-})(this, function (_, Backbone, IDBFS ) {
+})(this, function (_, Backbone, IDBFS) {
   var global = window;
   // Use Backbone and RequireJS to improve code  
   var StorageIO = function (_dbname) {
-     
-        // USE IDBFS SOMEWHERE HERE.
-          //Setting backbone models
-          //1) Directory
-          //2) File
- var Directory = Backbone.Model.extend({
-        initialize: function(){
-            // Triggered when you create a directory
+
+      // USE IDBFS SOMEWHERE HERE.
+      //Setting backbone models
+      //1) Directory
+      //2) File
+      var Directory = Backbone.Model.extend({
+        initialize: function () {
+          // Triggered when you create a directory
         }
-    });
-          
- var File = Backbone.Model.extend({
-        initialize: function(){
+      });
+
+      var File = Backbone.Model.extend({
+        initialize: function () {
           // Triggered when you create a File
         }
- });
-    return (global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB) ?
-         {
-          indexedDB: global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB,
-          IDBTransaction: global.IDBTransaction || global.webkitIDBTransaction || global.msIDBTransaction,
-          IDBKeyRange: global.IDBKeyRange || global.webkitIDBKeyRange || global.msIDBKeyRange,
-          req: null,
-          result: null,
-          _fs: IDBFS,
-          dbName: _dbname || "test",
-          error: function (event) {
-            // Should do some error handling
-            // TODO: This code is not complete.. Will finish soon
-            console.log("request failed!");
-          },
-          success: function (event) {
-            this.result = this.req.result;
-          },
-          read: function () {
-            //TODO:This code is not complete.. Will finish soon
-          },
-          rm: function () {
-            //TODO:This code is not complete.. Will finish soon
-          },
-          /**
-           *  @param {Object} has three keys and looks like this: {      "key" : string, 
-           *                                                           "value" : string, 
-           *                                                        "isUnique" : bool   }
-           * Establishs a database connection and if this is a a new database
-           * It creates the columns that will be used. It sets up the functions
-           * that are executed if the req's fail or succeed
-           */
-          open: function (columns) {
-            this.req = this.indexedDB.open(this.dbname);
-            this.req.onerror = this.error;
-            this.req.success = this.success;
-            // Comment: the "onupgradeneeded" is triggered when a new database is created and   
-            // TODO: Must be able to write key value pairs to the indexedDB.
-            // TODO: This code is not complete.. Will finish soon
-            this.req.onupgradeneeded = function (event) {
-              try {
-                var st = event.currentTarget.result.createObjectStore(this.dbname, {
-                  keypath: 'id',
-                  autoIncrement: true
-                });
-                if (!columns) throw new Error("Error code: 999 - Missing column variable in open function");
-                // Setting columns up
-                for (var i = 0; i < obj.length; i++) {
-                  st.createIndex(columns[i]["key"], columns[i]["value"], {
-                    unique: columns[i]["isUnique"]
-                  });
-                }
-              } catch (e) {
-                  // TODO: Must handle exception 
-              } finally {
-                  // TODO: clean up 
-              }
-            }
-            return this;
-          },
-          /**
-           * @param {Object} has three keys and looks like this: { "key":string, value":string, "isUnique":bool}
-           */
-          write: function (obj) {
-
-
-          },
-          close: function () {}
-      
-        } : { read: function () {
-          /*
-         * As a fallback solution to acheive cross browser compatibility 
-         * I've included a Web SQL Backed solution.
-         * TODO:This code is not complete.. Will finish soon
-         */
+      });
+      return (global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB) ? {
+        indexedDB: global.indexedDB || global.mozIndexedDB || global.webkitIndexedDB || global.msIndexedDB,
+        IDBTransaction: global.IDBTransaction || global.webkitIDBTransaction || global.msIDBTransaction,
+        IDBKeyRange: global.IDBKeyRange || global.webkitIDBKeyRange || global.msIDBKeyRange,
+        req: null,
+        result: null,
+        _fs: IDBFS,
+        dbName: _dbname || "test",
+        error: function (event) {
+          // Should do some error handling
+          // TODO: This code is not complete.. Will finish soon
+          console.log("request failed!");
         },
-            write: function () {},
-               rm: function () {}  };
+        success: function (event) {
+          this.result = this.req.result;
+        },
+        read: function () {
+          //TODO:This code is not complete.. Will finish soon
+        },
+        rm: function () {
+          //TODO:This code is not complete.. Will finish soon
+        },
+        /**
+         *  @param {Object} has three keys and looks like this: {      "key" : string, 
+         *                                                           "value" : string, 
+         *                                                        "isUnique" : bool   }
+         * Establishs a database connection and if this is a a new database
+         * It creates the columns that will be used. It sets up the functions
+         * that are executed if the req's fail or succeed
+         */
+        open: function (columns) {
+          this.req = this.indexedDB.open(this.dbname);
+          this.req.onerror = this.error;
+          this.req.success = this.success;
+          // Comment: the "onupgradeneeded" is triggered when a new database is created and   
+          // TODO: Must be able to write key value pairs to the indexedDB.
+          // TODO: This code is not complete.. Will finish soon
+          this.req.onupgradeneeded = function (event) {
+            try {
+              var st = event.currentTarget.result.createObjectStore(this.dbname, {
+                keypath: 'id',
+                autoIncrement: true
+              });
+              if (!columns) throw new Error("Error code: 999 - Missing column variable in open function");
+              // Setting columns up
+              for (var i = 0; i < obj.length; i++) {
+                st.createIndex(columns[i]["key"], columns[i]["value"], {
+                  unique: columns[i]["isUnique"]
+                });
+              }
+            } catch (e) {
+              // TODO: Must handle exception 
+            } finally {
+              // TODO: clean up 
+            }
+          }
+          return this;
+        },
+        /**
+         * @param {Object} has three keys and looks like this: { "key":string, value":string, "isUnique":bool}
+         */
+        write: function (obj) {
+
+
+        },
+        close: function () {}
+
+      } : {
+        read: function () {
+          /*
+           * As a fallback solution to acheive cross browser compatibility 
+           * I've included a Web SQL Backed solution.
+           * TODO:This code is not complete.. Will finish soon
+           */
+        },
+        write: function () {},
+        rm: function () {}
       };
-
-    
-
+    };
 
   _.StorageIO = StorageIO;
 });
